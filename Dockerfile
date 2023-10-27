@@ -1,6 +1,10 @@
 # Use an official Node.js runtime as a base image
 FROM node:20.9.0-slim
 
+LABEL org.opencontainers.image.source=https://github.com/fernetowac/off-cors
+LABEL org.opencontainers.image.description="Tiny proxy server for preventing browser CORS checks"
+LABEL org.opencontainers.image.licenses=ISC
+
 # Set the working directory inside the container
 WORKDIR /app
 
