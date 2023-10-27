@@ -1,5 +1,5 @@
+const axios = require("axios");
 const express = require("express");
-const request = require("request");
 
 const app = express();
 
@@ -38,15 +38,17 @@ function proxyRequest(targetUrl, req, res, data = null, method = "GET") {
       Authorization: req.header("Authorization"), // Pass along the Authorization header if it's provided
       "Content-Type": req.header("Content-Type"), // You can adjust the content type as needed
     },
-    body: data, // Include data in the request body for POST requests
+    data, // Include data in the request body for POST requests
   };
 
-  request(requestOptions, (_error, _response, body) => {
-    res.send(body);
+  axios(requestOptions).then((response) => {
+    res.send(response.data);
   });
 }
 
-const PORT = process.env.PORT || 9055;
-app.listen(PORT, () => {
+const PORT = 4000;
+const server = app.listen(PORT, () => {
   console.log(`CORS proxy server is running on port ${PORT}`);
 });
+
+module.exports = { app, server };

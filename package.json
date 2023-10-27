@@ -3,9 +3,8 @@
   "version": "1.0.1",
   "description": "Tiny proxy server in NodeJS for preventing browser CORS checks",
   "main": "cors_proxy.js",
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -23,7 +22,12 @@
   },
   "homepage": "https://github.com/fernetowac/off-cors#readme",
   "dependencies": {
-    "express": "^4.18.2",
-    "request": "^2.88.2"
+    "axios": "^1.6.0",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }
