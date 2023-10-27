@@ -43,4 +43,14 @@ describe("CORS Proxy Tests", function () {
         done();
       });
   });
+
+  it("should proxy GET request when http:// is missing", function (done) {
+    const targetUrl = "example.org";
+    supertest(app)
+      .get("/proxy?url=" + targetUrl)
+      .end(function (_err, res) {
+        expect(res.status).to.equal(200);
+        done();
+      });
+  });
 });

@@ -30,6 +30,9 @@ app.post("/proxy", (req, res) => {
 });
 
 function proxyRequest(targetUrl, req, res, data = null, method = "GET") {
+  if (!targetUrl.startsWith("http://") && !targetUrl.startsWith("https://")) {
+    targetUrl = "//" + targetUrl;
+  }
   const requestOptions = {
     method: method,
     url: targetUrl,
