@@ -7,4 +7,7 @@ node cors_proxy.js
 ```
 
 ## Usage
-call GET or POST http request to http://localhost:9055/proxy?url={targetHostUrl}
+
+Prefix your GET or POST url with `http://localhost:9055/proxy?url=`
+
+>See [sample.http](/sample.http)
