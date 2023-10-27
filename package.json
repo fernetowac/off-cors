@@ -1,6 +1,6 @@
 {
   "name": "off-cors",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Tiny proxy server in NodeJS for preventing browser CORS checks",
   "main": "cors_proxy.js",
   "devDependencies": {},
