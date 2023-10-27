@@ -18,7 +18,6 @@ app.use((_req, res, next) => {
   next();
 });
 
-// Define a route that handles the CORS request and proxies it to the target URL.
 app.get("/proxy", (req, res) => {
   const targetUrl = req.query.url;
   proxyRequest(targetUrl, req, res);
@@ -36,12 +35,12 @@ function proxyRequest(targetUrl, req, res, data = null, method = "GET") {
   const requestOptions = {
     method: method,
     url: targetUrl,
-    // headers: req.headers,
+    // headers: req.headers, // TODO: not working with SSL
     headers: {
-      Authorization: req.header("Authorization"), // Pass along the Authorization header if it's provided
-      "Content-Type": req.header("Content-Type"), // You can adjust the content type as needed
+      Authorization: req.header("Authorization"),
+      "Content-Type": req.header("Content-Type"),
     },
-    data, // Include data in the request body for POST requests
+    data,
   };
 
   axios(requestOptions).then((response) => {
