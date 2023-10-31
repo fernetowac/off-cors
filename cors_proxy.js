@@ -10,7 +10,10 @@ app.use(express.json());
 // Enable CORS by setting appropriate headers
 app.use((_req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // Allow requests from any origin (for testing; restrict in production)
-  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+  );
   res.header(
     "Access-Control-Allow-Headers",
     "Authorization, Origin, X-Requested-With, Content-Type, Accept"
@@ -18,17 +21,24 @@ app.use((_req, res, next) => {
   next();
 });
 
-app.get("/proxy", (req, res) => {
+// Handle all HTTP methods for /proxy
+app.all("/proxy", (req, res) => {
+  if (req.method === "OPTIONS") {
+    res.sendStatus(200);
+    return;
+  }
+
   const targetUrl = req.query.url;
-  proxyRequest(targetUrl, req, res);
+  proxyRequest(
+    targetUrl,
+    req,
+    res,
+    req.method === "GET" ? undefined : req.body,
+    req.method
+  );
 });
 
-app.post("/proxy", (req, res) => {
-  const targetUrl = req.query.url;
-  proxyRequest(targetUrl, req, res, req.body, "POST");
-});
-
-function proxyRequest(targetUrl, req, res, data = null, method = "GET") {
+function proxyRequest(targetUrl, req, res, data, method = "GET") {
   if (!targetUrl.startsWith("http://") && !targetUrl.startsWith("https://")) {
     targetUrl = "//" + targetUrl;
   }
@@ -43,9 +53,19 @@ function proxyRequest(targetUrl, req, res, data = null, method = "GET") {
     data,
   };
 
-  axios(requestOptions).then((response) => {
-    res.send(response.data);
-  });
+  axios(requestOptions)
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((error) => {
+      if (error.response) {
+        res.status(error.response.status).send(error.response.data);
+      } else if (error.request) {
+        res.status(500).send(error.message);
+      } else {
+        res.status(500).send(error.message);
+      }
+    });
 }
 
 const PORT = 4000;

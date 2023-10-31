@@ -33,7 +33,7 @@ describe("CORS Proxy Tests", function () {
     supertest(app)
       .get("/proxy?url=" + targetUrl)
       .expect("Access-Control-Allow-Origin", "*")
-      .expect("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+      .expect("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
       .expect(
         "Access-Control-Allow-Headers",
         "Authorization, Origin, X-Requested-With, Content-Type, Accept"
